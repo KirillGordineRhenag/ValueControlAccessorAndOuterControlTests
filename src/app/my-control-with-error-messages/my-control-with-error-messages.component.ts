@@ -5,34 +5,33 @@ import {
   Optional,
   Self,
   forwardRef,
+  Input,
 } from '@angular/core';
 import {
+  AbstractControl,
   ControlValueAccessor,
   FormControl,
   NgControl,
   NG_VALUE_ACCESSOR,
+  Validators,
 } from '@angular/forms';
 
 @Component({
   selector: 'app-my-control-with-error-messages',
   templateUrl: './my-control-with-error-messages.component.html',
   styleUrls: ['./my-control-with-error-messages.component.css'],
-  // providers: [
-  //   {
-  //     provide: NG_VALUE_ACCESSOR,
-  //     useExisting: forwardRef(() => MyControlWithErrorMessagesComponent),
-  //     multi: true,
-  //   },
-  // ],
 })
 export class MyControlWithErrorMessagesComponent
   implements OnInit, ControlValueAccessor
 {
   public value;
   public formControl = new FormControl();
+  public outerControl?: AbstractControl;
 
   private onChange: (string) => void;
   private onTouched: () => void;
+
+  @Input() public label = '';
 
   constructor(
     @Optional()
@@ -43,9 +42,14 @@ export class MyControlWithErrorMessagesComponent
   }
 
   ngOnInit() {
-    this.controlDirective.control.addValidators((control) =>
-      control.value === 'error' ? { customError: 'Oopsie' } : undefined
-    );
+    this.outerControl = this.controlDirective.control;
+    this.controlDirective.control.addValidators([
+      Validators.minLength(2),
+      (control) =>
+        control.value.startsWith('error')
+          ? { innerValidator: 'Error from inner validator' }
+          : undefined,
+    ]);
   }
 
   writeValue(value: any): void {

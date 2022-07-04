@@ -1,9 +1,8 @@
 <hello name="{{ name }}"></hello>
-<p></p>
-Here comes app-my-control-with-error-messages:
+<button (click)="addErrorToControl()">add error</button>
+<button (click)="removeErrorFromControl()">remove error</button>
 <app-my-control-with-error-messages
-  *ngIf="true"
-  [formControl]="formControlWithOwnErrorMessages"
+  [formControl]="formControl"
 ></app-my-control-with-error-messages>
 
-<!-- <input [formControl]="formControl" /> -->
+<pre>formControl in app.component = {{ formControl | json }}</pre>

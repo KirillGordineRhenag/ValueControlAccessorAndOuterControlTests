@@ -1,8 +1,24 @@
-Here is app-my-control-with-error-messages
 <input
-  matInput
   [formControl]="formControl"
   (change)="onInputChange($event)"
   (blur)="onInputBlur()"
 />
-<pre></pre>
+<ul>
+  <li *ngFor="let error of outerControl.errors | keyvalue">
+    <ng-container [ngSwitch]="error.key">
+      <ng-container *ngSwitchCase="'required'">
+        Field required error
+      </ng-container>
+      <ng-container *ngSwitchCase="'minlength'">
+        Please enter at least {{ error.value.requiredLength }} chars
+      </ng-container>
+      <ng-container *ngSwitchDefault>
+        {{ error.value }}
+      </ng-container>
+    </ng-container>
+  </li>
+</ul>
+<hr />
+<pre>formControl.errors = {{ formControl.errors | json }}</pre>
+<pre>outerControl.errors = {{ outerControl.errors | json }}</pre>
+<pre>outerControl = {{ outerControl | json }}</pre>
