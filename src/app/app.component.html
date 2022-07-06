@@ -1,7 +1,6 @@
-<button (click)="addErrorToControl()">add error</button>
+<button (click)="addErrorToControl()">set error</button>
 <button (click)="removeErrorFromControl()">remove error</button>
+<br />
 <app-my-control-with-error-messages
   [formControl]="formControl"
 ></app-my-control-with-error-messages>
-
-<pre>formControl in app.component = {{ formControl | json }}</pre>

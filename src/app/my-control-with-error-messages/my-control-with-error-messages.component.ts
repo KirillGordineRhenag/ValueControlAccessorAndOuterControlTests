@@ -28,6 +28,8 @@ export class MyControlWithErrorMessagesComponent
   public formControl = new FormControl();
   public outerControl?: AbstractControl;
 
+  public forwardValidatorCalls = false;
+
   private onChange: (string) => void;
   private onTouched: () => void;
 
@@ -50,6 +52,9 @@ export class MyControlWithErrorMessagesComponent
           ? { innerValidator: 'Error from inner validator' }
           : undefined,
     ]);
+
+    // don't want to do this!
+    this.formControl.addValidators((control) => this.forwardValidatorCalls ? this.outerControl.validator?.(control) : null );
   }
 
   writeValue(value: any): void {
