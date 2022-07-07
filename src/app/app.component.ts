@@ -8,6 +8,7 @@ import { FormControl, Validators } from '@angular/forms';
 })
 export class AppComponent {
   name = 'Angular ' + VERSION.major;
+  log: string[] = [];
   formControl = new FormControl('', [
     (control) =>
       control.value.startsWith('err')
@@ -15,6 +16,10 @@ export class AppComponent {
         : undefined,
     Validators.maxLength(10),
     Validators.required,
+    (control) => {
+      this.log = [...this.log, `validator triggered for "${control.value}"`];
+      return null;
+    },
   ]);
 
   public addErrorToControl() {

@@ -1,6 +1,11 @@
 <button (click)="addErrorToControl()">set error</button>
 <button (click)="removeErrorFromControl()">remove error</button>
 <br />
+There are four validators: required and doesn't start with "err" in the outer
+and maxLength(20) and doesn't start with "error" for the inner componentn
+<br />
 <app-my-control-with-error-messages
   [formControl]="formControl"
 ></app-my-control-with-error-messages>
+<br />
+<pre>{{ log.join('\n') }}</pre>

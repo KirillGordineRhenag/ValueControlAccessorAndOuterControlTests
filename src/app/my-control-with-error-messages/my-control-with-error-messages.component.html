@@ -32,6 +32,10 @@ Debug:
   type="checkbox"
   [(ngModel)]="forwardValidatorCalls"
 />forwardValidatorCalls
+<input
+  type="checkbox"
+  [(ngModel)]="useOuterFormControl"
+/>useOuterFormControl
 <pre>formControl.errors = {{ formControl.errors | json }}</pre>
 <pre>outerControl.errors = {{ outerControl.errors | json }}</pre>
 <ul>

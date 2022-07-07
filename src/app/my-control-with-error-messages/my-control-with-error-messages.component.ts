@@ -6,6 +6,7 @@ import {
   Self,
   forwardRef,
   Input,
+  AfterViewInit,
 } from '@angular/core';
 import {
   AbstractControl,
@@ -22,13 +23,26 @@ import {
   styleUrls: ['./my-control-with-error-messages.component.css'],
 })
 export class MyControlWithErrorMessagesComponent
-  implements OnInit, ControlValueAccessor
+  implements OnInit, ControlValueAccessor, AfterViewInit
 {
   public value;
-  public formControl = new FormControl();
+  private innerFormControl = new FormControl();
+
+  public formControl = this.innerFormControl;
   public outerControl?: AbstractControl;
 
   public forwardValidatorCalls = false;
+  private _useOuterFormControl = false;
+  public set useOuterFormControl(value: boolean) {
+    this._useOuterFormControl = value;
+    this.formControl = this.useOuterFormControl
+      ? (this.outerControl as FormControl)
+      : this.innerFormControl;
+  }
+
+  public get useOuterFormControl() {
+    return this._useOuterFormControl;
+  }
 
   private onChange: (string) => void;
   private onTouched: () => void;
@@ -54,7 +68,15 @@ export class MyControlWithErrorMessagesComponent
     ]);
 
     // don't want to do this!
-    this.formControl.addValidators((control) => this.forwardValidatorCalls ? this.outerControl.validator?.(control) : null );
+    this.formControl.addValidators((control) =>
+      this.forwardValidatorCalls ? this.outerControl.validator?.(control) : null
+    );
+  }
+
+  ngAfterViewInit() {
+    // here we could do the assignment
+    // this.formControl = this.controlDirective.control;
+    // if it is an acceptable decision
   }
 
   writeValue(value: any): void {
