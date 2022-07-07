@@ -17,7 +17,7 @@ export class AppComponent {
     Validators.maxLength(10),
     Validators.required,
     (control) => {
-      this.log = [...this.log, `validator triggered for "${control.value}"`];
+      this.log = [...this.log, `validator triggered for "${control.value}" at ${new Date().toISOString()}`];
       return null;
     },
   ]);
